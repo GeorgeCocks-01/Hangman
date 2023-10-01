@@ -3,6 +3,7 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -96,6 +97,24 @@ int main() {
     cout << endl << "Enter letter to guess: ";
     cin >> guessedLetter;
 
+    // Checks if guessed letter has already been guessed
+    if (find(usedLetters.begin(), usedLetters.end(), guessedLetter) == usedLetters.end()) {
+      usedLetters.push_back(guessedLetter);
+    } else {
+      while (find(usedLetters.begin(), usedLetters.end(), guessedLetter) != usedLetters.end()) {
+        cout << "Letter has already been guessed" << endl;
+
+        cout << "(Used letters:";
+        for (char letter : usedLetters) {
+          cout << " " << letter;
+        }
+        cout << ")";
+
+        cout << endl << "Enter a different letter to guess: ";
+        cin >> guessedLetter;
+      }
+    }
+
     int position = word.find(guessedLetter);
 
     if (position != string::npos) {
@@ -117,7 +136,6 @@ int main() {
       lose = true;
     }
 
-    usedLetters.push_back(guessedLetter);
   }
 
   cout << endl << "The word was " << word << endl;
